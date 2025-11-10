@@ -1,54 +1,42 @@
-#include <iostream>
+#include<iostream>
+#include<algorithm>
 using namespace std;
-#define N 8
-bool isSafe(int b[N][N], int r, int c)
-{
-    for (int i = 0; i < r; i++)
-    {
-        if (b[i][c])
-        {
-            return false;
-        }
-        if (c - r + i >= 0 && b[i][c - r + i])
-        {
-            return false;
-        }
-        if (c + r - i < N && b[i][c + r - i])
-        {
-            return false;
-        }
-    }
-    return true;
+
+struct Item {
+    int weight;
+    int value;
+};
+
+// Comparator: sort items by value/weight ratio (descending)
+bool compare(Item a, Item b) {
+    double r1 = (double)a.value / a.weight;
+    double r2 = (double)b.value / b.weight;
+    return r1 > r2;
 }
-bool solve(int b[N][N], int r)
-{
-    if (r == N)
-    {
-        return true;
-    }
-    for (int c = 0; c < N; c++)
-    {
-        if (isSafe(b, r, c))
-        {
-            b[r][c] = 1;
-            if (solve(b,r+1))
-                return true;
-            b[r][c] = 0;
+int main() {
+    int w = 50; // Knapsack capacity
+    int n = 3;
+    Item arr[] = {{10,60}, {20,100}, {30,120}}; // weight, value
+
+    // Sort by ratio
+    sort(arr, arr + n, compare);
+
+    int currWeight = 0;
+    double totalValue = 0.0;
+
+    for (int i = 0; i < n; i++) {
+        if (currWeight + arr[i].weight <= w) {
+            // take the whole item
+            currWeight += arr[i].weight;
+            totalValue += arr[i].value;
+        } else {
+            // take fraction of remaining capacity
+            int remain = w - currWeight;
+            totalValue += arr[i].value * ((double)remain / arr[i].weight);
+            break;
         }
     }
-    return false;
-}
-int main()
-{
-    int b[N][N] = {0};
-    if (solve(b, 0))
-    {
-        cout << "N Queen :"<<endl;
-        for (int i = 0; i < N; i++)
-        {
-            for (int j = 0; j < N; j++)
-                cout << b[i][j] << " ";
-            cout << endl;
-        }
-    }
+
+    cout << "Total value in knapsack: " << totalValue << endl;
+    return 0;
 }
