@@ -43,7 +43,6 @@ void quickSortRand(int a[], int low, int high)
         quickSortRand(a, p + 1, high);
     }
 }
-
 void print(int a[], int n)
 {
     for (int i = 0; i < n; i++)

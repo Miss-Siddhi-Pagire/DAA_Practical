@@ -1,7 +1,6 @@
 #include <iostream>
 #include <queue>
 using namespace std;
-
 struct Node
 {
     char ch;
@@ -14,7 +13,6 @@ struct Node
         left = right = NULL;
     }
 };
-
 struct cmp
 {
     bool operator()(Node *a, Node *b) 
@@ -32,7 +30,6 @@ void printCodes(Node *root, string s)
     printCodes(root->left, s + "0");
     printCodes(root->right, s + "1");
 }
-
 int main()
 {
     char ch[] = {'A', 'B', 'C', 'D', 'E', 'F'};
